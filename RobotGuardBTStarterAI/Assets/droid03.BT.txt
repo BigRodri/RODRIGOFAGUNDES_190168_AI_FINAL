@@ -1,0 +1,37 @@
+tree("Root")
+	parallel
+	//chama sem parar
+		repeat mute tree("Patrol")
+		repeat mute tree("Dead")
+
+//patrulha se tiver menos de 100 de vida
+tree("Patrol")							//Patrulha
+	fallback						//Volta atras
+		tree("Attack")					//Inicia o ataque
+		while IsHealthLessThan(100.0)			//Se a vida for menor que 100
+			fallback				//Volta atras
+				tree("Patrulha")		//Patrulha pontos especificos
+	
+
+tree("Dead")							//Morte é igual para todos os bots
+	sequence		
+		IsHealthLessThan(0.1)
+		Explode
+
+
+//se ve o player olha para ele e atira
+tree("Attack")							//Ataque
+	while SeePlayer						//Se olhar para o player
+		sequence					//Segue a sequencia
+			TargetPlayer				//Seta o player como target
+			LookAtTarget				//Olha para o target
+			Wait(0.1)				//Espera
+			Fire					//Atira
+
+//patrulha pontos especificos
+tree("Patrulha")						//Patrullha dois pontos especificos
+	sequence						//Segue a sequencia
+		Patrulha01					//Seta ponto de patrulha 1
+		Wait(0.1)					//Espera
+		Patrulha02					//Seta ponto de patrulha 2
+		Wait(0.1)					//Espera

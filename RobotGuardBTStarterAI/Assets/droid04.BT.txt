@@ -1,0 +1,33 @@
+tree("Root")
+	parallel
+	//chama sem parar
+		repeat mute tree("Patrol")
+		repeat mute tree("Dead")
+
+//patrulha se a vida for menor que 100
+tree("Patrol")						//Patrulha	
+	fallback					//Volta atras
+		tree("Seguir")				//Inicia o Seguir
+		while IsHealthLessThan(100.0)		//Se a vida for menor que 100	
+			fallback			//Volta atras
+				tree("Patrulha")	//Patrulha pontos aleatorios
+
+	
+tree("Dead")						//Morte é igual para todos os bots
+	sequence
+		IsHealthLessThan(0.1)
+		Explode
+
+
+
+tree("Seguir")						//Segue se ver o playr
+	while SeePlayer					//Se ver o player
+		sequence				//Segue a sequencia
+			Segue				//COmeça a seguir
+			Wait(0.1)			//Espera
+	
+//patrulha pontos aleatorios
+tree("Patrulha")				
+	sequence					//Segue a sequencia
+		PickRandomDestination			//Seta coordenadas aleatórias
+		MoveToDestination			//Vai até coordenada setada

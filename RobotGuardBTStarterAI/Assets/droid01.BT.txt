@@ -1,0 +1,31 @@
+tree("Root")
+	parallel
+	//chama sem parar
+		repeat mute tree("Patrol")
+		repeat mute tree("Dead")
+
+tree("Patrol")						//Patrulha	
+	fallback					//Volta atras
+		tree("Attack")				//Inicia o ataque
+		while IsHealthLessThan(100.0)		//Se a vida for menor que 100
+			fallback			//Volta atras
+				tree("Wander")		//Inicia o wander
+
+tree("Dead")						//Morte
+	sequence					//Segue a sequencia
+		IsHealthLessThan(0.1)			//Se a vida for menor que 0.1
+		Explode					//Explode
+	
+
+tree("Attack")						//Ataca ao ver o player
+	while SeePlayer					//Se ver o player
+		sequence				//Segue a sequencia
+			TargetPlayer			//Seta o player como target
+			LookAtTarget			//Olha para o target
+			Wait(0.1)			//Espera
+			Fire				//Atira
+		
+tree("Wander")						
+	sequence					//Segue a sequencia
+		PickRandomDestination			//Seta uma coordenada aleatoria
+		MoveToDestination			//Vai até essa coordenada
